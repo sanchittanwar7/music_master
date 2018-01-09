@@ -9,6 +9,7 @@ import TopCountryArtists from './TopCountryArtists'
 import TopCountryTracks from './TopCountryTracks'
 import TopGlobalTracks from './TopGlobalTracks'
 import TopGlobalArtist from './TopGlobalArtist'
+import { bake_cookie, read_cookie} from 'sfcookies';
 
 class App extends Component {
 	constructor(props){
@@ -61,8 +62,9 @@ class App extends Component {
 	search(){
 		// console.log('this.state', this.state.query);
 		let BASE_URL = 'http://ws.audioscrobbler.com/2.0/?method=' ;
+		let artist = read_cookie('artist');
 
-		let FETCH_URL = BASE_URL + 'artist.getinfo&artist=' + this.state.query + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json';
+		let FETCH_URL = BASE_URL + 'artist.getinfo&artist=' + artist + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json';
 		// console.log('FETCH_URL', FETCH_URL);
 		fetch(FETCH_URL, {
 			method: 'GET'
@@ -74,7 +76,7 @@ class App extends Component {
 			this.setState({artist, stats: artist.stats, bio: artist.bio, images: artist.image});
 		});
 
-		FETCH_URL = BASE_URL + 'artist.gettoptracks&artist=' + this.state.query + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json&limit=10'
+		FETCH_URL = BASE_URL + 'artist.gettoptracks&artist=' + artist + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json&limit=10'
 		fetch(FETCH_URL, {
 			method: 'GET'
 		})
@@ -85,7 +87,7 @@ class App extends Component {
 			this.setState({tracks: tracks.track});
 		});
 
-		FETCH_URL = BASE_URL + 'artist.gettopalbums&artist=' + this.state.query + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json&limit=10'
+		FETCH_URL = BASE_URL + 'artist.gettopalbums&artist=' + artist + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json&limit=10'
 		fetch(FETCH_URL, {
 			method: 'GET'
 		})
@@ -95,7 +97,7 @@ class App extends Component {
 			this.setState({albums: albums.album});
 		});
 
-		FETCH_URL = BASE_URL + 'artist.getsimilar&artist=' + this.state.query + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json&limit=5'
+		FETCH_URL = BASE_URL + 'artist.getsimilar&artist=' + artist + '&api_key=4d83aea4aa7a08a5affb90aa7dcf37a6&format=json&limit=5'
 		fetch(FETCH_URL, {
 			method: 'GET'
 		})
@@ -108,10 +110,12 @@ class App extends Component {
 	}
 
 	changeArtist(similarArtist) {
-		this.setState({query: similarArtist}, function(){
-					this.search();
+		bake_cookie('artist', similarArtist);
+		this.search();
+		// this.setState({query: similarArtist}, function(){
+		// 			this.search();
 
-		});
+		// });
 	}
 
 	// componentDidMount() {
@@ -182,19 +186,22 @@ class App extends Component {
 	      });
 
 	    console.log(this.state.countryName)
+	    this.search();
 	}
 
 	render() {
 		return (
 			<div className = "App">
-				<div className = "App-title" onClick = {event => {this.setState({artist: null, query: ''})}}>Music Master</div>
+				<div className = "App-title" onClick = {event => {this.setState({artist: null, query: ''});
+														bake_cookie('artist', '')}}>Music Master</div>
 				<FormGroup>
 					<InputGroup>
 						<FormControl
 							type = "text"
 							placeholder = "Search for an artist"
 							value = {this.state.query}
-							onChange = {event => {this.setState({query: event.target.value})}}
+							onChange = {event => {this.setState({query: event.target.value});
+						                           bake_cookie('artist', event.target.value)}}
 							onKeyPress = { event => {
 								if(event.key === 'Enter'){
 									this.search();
