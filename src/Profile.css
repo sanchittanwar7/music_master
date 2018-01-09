@@ -1,0 +1,33 @@
+.profile{
+  width: 90%;
+  margin: auto;
+  display: flex;
+  text-align: left;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.artist-name{
+  font-size: 36px;
+}
+
+.artist-bio{
+  font-size: 15px;
+}
+
+.listeners-count, .play-count{
+  font-size: 18px;
+}
+
+.profile-pic{
+  width: 220px;
+  height: 220px;
+  background-color: black;
+  border-radius: 110px;
+  object-fit: cover;
+}
+
+.profile-info{
+  padding: 36px;
+  box-sizing: border-box;
+}

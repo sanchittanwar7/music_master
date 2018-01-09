@@ -1,0 +1,36 @@
+.top-tracks{
+  padding: 36px;
+  box-sizing: border-box;
+}
+
+.track{
+  display: inline-block;
+  width: 220px;
+  height: 220px;
+  margin: 18px;
+  text-align: left;
+  border-radius: 110px;
+  /*cursor: pointer;*/
+  position: relative;
+  background-color: white;
+}
+
+.track-text{
+  background-color: black;
+  color: white;
+  height: 24px;
+  font-size: 15px;
+  opacity: 0.8;
+  width: 214px;
+  margin-left: 3px;
+  align-items: center;
+  position: absolute;
+  /*margin-top: 50%;*/
+}
+
+.img{
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 110px;
+}
